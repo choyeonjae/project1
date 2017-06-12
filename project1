@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <string.h>
+
+void Eliminate(char *palin, char ch); //스페이스 지우기
+
+int main(void) 
+{
+	char palin[100];
+
+	printf("입력 : ");
+	fgets(palin, sizeof(palin), stdin); //문장입력받기
+
+	int i;
+	for (i = 0; i < 100; i++)  
+	{
+		if (33 <= palin[i] && palin[i] <= 47 || 58 <= palin[i] && palin[i] <= 64 || 91 <= palin[i] && palin[i] <= 96 || 123 <= palin[i] && palin[i] <= 126) //특수문자 없애기
+		//if (90 < palin[i] &&97 > palin[i] || palin[i] > 122 )  //특수문자 없애기
+		{
+			int idx = i;
+			memmove(palin + idx, palin + idx + 1, strlen(palin) - idx);
+		}
+		else if (palin[i] >= 65 && palin[i] <= 90) //대문자를 소문자로
+		{
+			palin[i] = palin[i] + 32;
+		}
+		Eliminate(palin, ' ');  //스페이스 지우기
+	}
+
+	char *re_palin;   //받은 문장 거꾸로 뒤집기
+	re_palin = strrev(palin);
+	//printf("%s\n", re_palin); //문장 잘 뒤집혔는지 확인용...
+
+	if (re_palin == palin) 
+	{
+		printf("Yes!\n");
+	}
+	else if (re_palin != palin) 
+	{
+		printf("No...\n");
+	}
+
+}
+
+void Eliminate(char *palin, char ch) 
+{
+	for (; *palin != '\0'; palin++)   //종료 문자를 만날 때까지 반복
+	{
+		if (*palin == ch)  //ch와 같은 문자일 때
+		{
+			strcpy(palin, palin + 1);
+			palin--;
+		}
+	}
+}
